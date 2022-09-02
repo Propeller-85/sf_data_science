@@ -4,8 +4,9 @@
 
 import numpy as np
 
-
+number = np.random.randint(1, 101)
 def random_predict(number: int = 1) -> int:
+
     """Рандомно угадываем число
 
     Args:
@@ -14,16 +15,23 @@ def random_predict(number: int = 1) -> int:
     Returns:
         int: Число попыток
     """
+    limit_a = 0
     count = 0
-
-    while True:
+    limit_b = 101
+    predict = np.random.randint(limit_a, limit_b)
+    
+    while number != predict:
         count += 1
-        predict_number = np.random.randint(1, 101)  # предполагаемое число
-        if number == predict_number:
-            break  # выход из цикла если угадали
+        if number > predict:
+            limit_b = number
+            predict = np.random.randint(limit_a, limit_b)
+
+        elif number < predict:
+            limit_a = number
+            predict = np.random.randint(limit_a, limit_b)
+            break
+        
     return count
-
-
 def score_game(random_predict) -> int:
     """За какое количство попыток в среднем за 1000 подходов угадывает наш алгоритм
 
