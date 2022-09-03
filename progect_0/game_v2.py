@@ -2,6 +2,7 @@
 Компьютер сам загадывает и сам угадывает число
 """
 
+from tracemalloc import start
 import numpy as np
 
 
@@ -15,12 +16,22 @@ def random_predict(number: int = 1) -> int:
         int: Число попыток
     """
     count = 0
-
+    start = 1
+    end = 101
+    
     while True:
         count += 1
-        predict_number = np.random.randint(1, 101)  # предполагаемое число
-        if number == predict_number:
+        predict_number = np.random.randint(start, end)  # предполагаемое число
+                     
+        if predict_number == number:
             break  # выход из цикла если угадали
+               
+        elif predict_number > number:
+            end = predict_number    
+                  
+        elif predict_number < number:
+            start = predict_number     
+               
     return count
 
 
@@ -34,7 +45,6 @@ def score_game(random_predict) -> int:
         int: среднее количество попыток
     """
     count_ls = []
-    #np.random.seed(1)  # фиксируем сид для воспроизводимости
     random_array = np.random.randint(1, 101, size=(1000))  # загадали список чисел
 
     for number in random_array:
@@ -42,6 +52,7 @@ def score_game(random_predict) -> int:
 
     score = int(np.mean(count_ls))
     print(f"Ваш алгоритм угадывает число в среднем за:{score} попыток")
+    
     return score
 
 
